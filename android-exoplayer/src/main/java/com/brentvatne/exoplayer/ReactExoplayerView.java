@@ -392,10 +392,9 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     private class RNVLoadControl extends DefaultLoadControl {
-        public RNVLoadControl(DefaultAllocator allocator, int minBufferAudioMs, int minBufferVideoMs, int maxBufferMs, int bufferForPlaybackMs, int bufferForPlaybackAfterRebufferMs, int targetBufferBytes, boolean prioritizeTimeOverSizeThresholds, int backBufferDurationMs, boolean retainBackBufferFromKeyframe) {
+        public RNVLoadControl(DefaultAllocator allocator, int minBufferMs, int maxBufferMs, int bufferForPlaybackMs, int bufferForPlaybackAfterRebufferMs, int targetBufferBytes, boolean prioritizeTimeOverSizeThresholds, int backBufferDurationMs, boolean retainBackBufferFromKeyframe) {
             super(allocator,
-                    minBufferAudioMs,
-                    minBufferVideoMs,
+                    minBufferMs,
                     maxBufferMs,
                     bufferForPlaybackMs,
                     bufferForPlaybackAfterRebufferMs,
@@ -406,11 +405,11 @@ class ReactExoplayerView extends FrameLayout implements
         }
 
         @Override
-        public boolean shouldContinueLoading(long bufferedDurationUs, float playbackSpeed) {
+        public boolean shouldContinueLoading(long playbackPositionUs, long bufferedDurationUs, float playbackSpeed) {
             if (ReactExoplayerView.this.disableBuffering) {
                 return false;
             }
-            return super.shouldContinueLoading(bufferedDurationUs, playbackSpeed);
+            return super.shouldContinueLoading(playbackPositionUs, bufferedDurationUs, playbackSpeed);
         }
     }
 
@@ -429,7 +428,6 @@ class ReactExoplayerView extends FrameLayout implements
                     DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
                     RNVLoadControl loadControl = new RNVLoadControl(
                             allocator,
-                            minBufferMs,
                             minBufferMs,
                             maxBufferMs,
                             bufferForPlaybackMs,
