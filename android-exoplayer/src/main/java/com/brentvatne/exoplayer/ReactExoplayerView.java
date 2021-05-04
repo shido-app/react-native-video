@@ -127,7 +127,7 @@ class ReactExoplayerView extends FrameLayout implements
     private boolean hasAudioFocus = false;
     private float rate = 1f;
     private float audioVolume = 1f;
-    private int minLoadRetryCount = Integer.MAX_VALUE;
+    private int minLoadRetryCount = 3;
     private int maxBitRate = 0;
     private long seekTime = C.TIME_UNSET;
 

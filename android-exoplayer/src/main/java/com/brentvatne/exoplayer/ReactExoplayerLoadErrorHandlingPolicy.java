@@ -2,7 +2,8 @@ package com.brentvatne.exoplayer;
 
 import java.io.IOException;
 import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.upstream.HttpDataSource.HttpDataSourceException;
+import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy.LoadErrorInfo;
 import com.google.android.exoplayer2.C;
 
 public final class ReactExoplayerLoadErrorHandlingPolicy extends DefaultLoadErrorHandlingPolicy {
@@ -10,22 +11,23 @@ public final class ReactExoplayerLoadErrorHandlingPolicy extends DefaultLoadErro
 
   public ReactExoplayerLoadErrorHandlingPolicy(int minLoadRetryCount) {
     super(minLoadRetryCount);
-
     this.minLoadRetryCount = minLoadRetryCount;
   }
 
   @Override
-  public long getRetryDelayMsFor(int dataType, long loadDurationMs, IOException exception, int errorCount) {
-    // Capture the error we get when there is no network connectivity and keep retrying it
-    if (exception.type == ExoPlaybackException.TYPE_SOURCE) {
-      return 5000; // Retry every 5 seconds.
+  public long getRetryDelayMsFor(LoadErrorInfo loadErrorInfo) {
+    if (loadErrorInfo.exception instanceof HttpDataSourceException) {
+      // Capture the error we get when there is no network connectivity and keep retrying it
+      return 1000; // Retry every second
+    } else if(loadErrorInfo.errorCount < this.minLoadRetryCount) {
+      return Math.min((loadErrorInfo.errorCount - 1) * 1000, 5000); // Default timeout handling
     } else {
-      return C.TIME_UNSET; // Do not retry and immediately return the error
+      return C.TIME_UNSET; // Done retrying and will return the error immediately
     }
   }
 
   @Override
   public int getMinimumLoadableRetryCount(int dataType) {
-    return this.minLoadRetryCount;
+    return Integer.MAX_VALUE;
   }
 }
