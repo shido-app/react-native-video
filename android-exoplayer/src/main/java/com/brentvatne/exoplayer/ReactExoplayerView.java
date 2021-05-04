@@ -139,6 +139,7 @@ class ReactExoplayerView extends FrameLayout implements
     private Handler mainHandler;
 
     // Props from React
+    private Integer backBufferDurationMs = DefaultLoadControl.DEFAULT_BACK_BUFFER_DURATION_MS;
     private Uri srcUri;
     private String extension;
     private boolean repeat;
@@ -434,7 +435,7 @@ class ReactExoplayerView extends FrameLayout implements
                             bufferForPlaybackAfterRebufferMs,
                             -1,
                             true,
-                            DefaultLoadControl.DEFAULT_BACK_BUFFER_DURATION_MS,
+                            backBufferDurationMs,
                             DefaultLoadControl.DEFAULT_RETAIN_BACK_BUFFER_FROM_KEYFRAME
                     );
                     DefaultRenderersFactory renderersFactory =
@@ -1310,6 +1311,10 @@ class ReactExoplayerView extends FrameLayout implements
 
     public void setDisableFocus(boolean disableFocus) {
         this.disableFocus = disableFocus;
+    }
+
+    public void setBackBufferDurationMs(int backBufferDurationMs) {
+        this.backBufferDurationMs = backBufferDurationMs;
     }
 
     public void setDisableBuffering(boolean disableBuffering) {
