@@ -3,7 +3,6 @@ package com.brentvatne.exoplayer;
 import android.content.Context;
 
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
 
 public class DefaultReactExoplayerConfig implements ReactExoplayerConfig {
@@ -16,7 +15,7 @@ public class DefaultReactExoplayerConfig implements ReactExoplayerConfig {
 
     @Override
     public LoadErrorHandlingPolicy buildLoadErrorHandlingPolicy(int minLoadRetryCount) {
-        return new DefaultLoadErrorHandlingPolicy(minLoadRetryCount);
+        return new ReactExoplayerLoadErrorHandlingPolicy(minLoadRetryCount);
     }
 
     @Override

@@ -127,7 +127,7 @@ class ReactExoplayerView extends FrameLayout implements
     private boolean hasAudioFocus = false;
     private float rate = 1f;
     private float audioVolume = 1f;
-    private int minLoadRetryCount = 3;
+    private int minLoadRetryCount = Integer.MAX_VALUE;
     private int maxBitRate = 0;
     private long seekTime = C.TIME_UNSET;
 
@@ -139,7 +139,7 @@ class ReactExoplayerView extends FrameLayout implements
     private Handler mainHandler;
 
     // Props from React
-    private Integer backBufferDurationMs = DefaultLoadControl.DEFAULT_BACK_BUFFER_DURATION_MS;
+    private int backBufferDurationMs = DefaultLoadControl.DEFAULT_BACK_BUFFER_DURATION_MS;
     private Uri srcUri;
     private String extension;
     private boolean repeat;
